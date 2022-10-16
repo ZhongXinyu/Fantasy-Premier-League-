@@ -1,0 +1,51 @@
+import pandas as pd
+def mapping(df,dict_map):
+    df["full_name"] = df["id"].apply(lambda x: dict_map[x])
+    print ("Mapping Completed")
+    return (df)
+
+def counting(df):
+    """
+    Example input: 
+             id  position  multiplier  is_captain  is_vice_captain                  full_name
+        0   376         1           1       False            False                  Nick Pope
+        1   377         2           1       False            False                Sven Botman
+        2    26         3           1       False            False             William Saliba
+        3   357         4           1       False            False            Kieran Trippier
+        4   301         5           1       False            False            Kevin De Bruyne
+        5    13         6           1       False            False                Bukayo Saka
+        6   261         7           1       False            False             James Maddison
+        7   111         8           1       False            False           Leandro Trossard
+        8    28         9           1       False             True  Gabriel Fernando de Jesus
+        9   318        10           2        True            False             Erling Haaland
+        10  210        11           1       False            False        Aleksandar Mitrović
+    
+    Example Output:
+                             full_name  is_captain  is_vice_captain  count
+        0          Aleksandar Mitrović       False            False      4
+        1          Alexis Mac Allister       False            False      1
+        2        Alisson Ramses Becker       False            False      1
+        3   Andreas Hoelgebaum Pereira       False            False      4
+        ...
+    """
+    #print (df)
+    df = df.drop(['id','position','multiplier'],axis = 1)
+    df = pd.DataFrame({"count":df.groupby(['full_name', 'is_captain', 'is_vice_captain']).size()}).reset_index()
+    #df.rename(columns={0:"count"})
+    for col in ["is_captain","is_vice_captain"]:
+        df[col] = df[col].astype(int)
+        df[col] = df[col] * df["count"]
+    df = df.groupby(["full_name"]).sum().reset_index()
+    df = df.sort_values(by=['count'],ascending=False)
+    print (df)
+    print (df[df['full_name'] == "Harry Kane"])
+
+    #for index, full_name in enumerate (df["full_name"]):
+    #    if full_name in dict_player_count:
+    #        dict_player_count[full_name][0] += 1
+    #        #dict_player_count[full_name ]
+    #    else:
+    #        dict_player_count[full_name][0] = 1
+    #        #dict_player_count[full_name][1] = df
+    print ("Counting completed")
+    return (df)
