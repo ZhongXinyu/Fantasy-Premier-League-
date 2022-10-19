@@ -4,12 +4,38 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 import seaborn as sns
+import mplcursors
 # load sample data
 
 
 def dot_plot(df):
-    sns.relplot(data=df, x="total_bill", y="tip", hue="day", col="time")
+    """
+    Reference:https://seaborn.pydata.org/generated/seaborn.scatterplot.html
+    """
+    #df = df[df["mean"] >1] 
+    df["size"] = df["season_points"].apply (lambda x: x)
+    ax = sns.scatterplot(
+        data = df, 
+        x = "value", 
+        y = "mean", 
+        color = "#01FC7A",
+        size = "selected",
+        sizes = (20, 200),
+        markers = False,
+        alpha = 0.6
+        #hue_norm=(0, 1)
+        )### plot of points againt selected
     #cursor(hover=True)
+    plt.legend([],[], frameon=False) ###Remove legend
+    crs = mplcursors.cursor(ax, hover = True)
+    labels = list(
+        df["full_name"]
+        + ", PPG=" 
+        + df["mean"].astype(str)
+        #+ df["consistency"].astype(str)
+        )
+    #print (labels)
+    crs.connect("add", lambda sel: sel.annotation.set_text(labels[sel.index]))
     plt.show()
 
 def bar_player_count(df):
