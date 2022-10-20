@@ -17,7 +17,7 @@ def dot_plot(df):
     ax = sns.scatterplot(
         data = df, 
         x = "value", 
-        y = "mean", 
+        y = "season_bonus", 
         color = "#01FC7A",
         size = "selected",
         sizes = (20, 200),

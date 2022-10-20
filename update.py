@@ -21,3 +21,4 @@ def update_player():
     print ("Player Info Updated")
 
 update_basic_info()
+update_player()

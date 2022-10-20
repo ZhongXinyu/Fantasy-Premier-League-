@@ -22,7 +22,7 @@ def league_id():
 def player_id():
     return list(range(1,639))
 
-###
+###### These are informations that requires changing #######
 
 def test():
     return False 
@@ -33,11 +33,11 @@ def save_fig():
     else:
         return True
 
-def week():
-    return (list(range(1,10)))
-
 def read_from_local():
     return True
 
 def current_week():
-    return 9
+    return 11
+
+def week():
+    return (list(range(1,current_week())))
