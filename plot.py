@@ -12,19 +12,24 @@ def dot_plot(df):
     """
     Reference:https://seaborn.pydata.org/generated/seaborn.scatterplot.html
     """
-    #df = df[df["mean"] >1] 
-    df["size"] = df["season_points"].apply (lambda x: x)
+    ### Setting Filters ###
+    #df = df[df["position"] == 1] 
+    df = df[df["mean"]>2]
+    colour_dict = setting.team_colour_dict()
+    #df["size"] = df["season_points"].apply (lambda x: x)
     ax = sns.scatterplot(
         data = df, 
         x = "value", 
-        y = "season_bonus", 
-        color = "#01FC7A",
-        size = "selected",
-        sizes = (20, 200),
+        y = "selected", 
+        hue = "team",
+        size = "mean",
+        sizes = (5, 300),
         markers = False,
-        alpha = 0.6
+        alpha = 0.6,
+        palette = colour_dict #https://cmdlinetips.com/2019/04/how-to-specify-colors-to-scatter-plots-in-python/
+        #style = "position"
         #hue_norm=(0, 1)
-        )### plot of points againt selected
+        )
     #cursor(hover=True)
     plt.legend([],[], frameon=False) ###Remove legend
     crs = mplcursors.cursor(ax, hover = True)

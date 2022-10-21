@@ -1,6 +1,8 @@
 import pandas as pd
 def mapping(df,dict_map):
-    df["full_name"] = df["id"].apply(lambda x: dict_map[x])
+    df["full_name"] = df["id"].apply(lambda x: dict_map[x][0])
+    df["team"] = df["id"].apply(lambda x:dict_map[x][1])
+    df["position"] = df["id"].apply(lambda x:dict_map[x][2])
     print ("Mapping Completed")
     return (df)
 

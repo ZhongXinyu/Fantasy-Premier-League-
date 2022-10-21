@@ -54,6 +54,8 @@ def player():
     df["consistency"] = consistency
     df = miscellaneous.mapping (df, dict_map)
     df = df.fillna(0)
+    with pd.ExcelWriter('output.xlsx',mode='w') as writer:  
+        df.to_excel(writer, sheet_name='raw_data')
 
     plot.dot_plot(df)
 

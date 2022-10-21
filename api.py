@@ -1,3 +1,4 @@
+from curses import termname
 import requests as re
 import pandas as pd
 import setting
@@ -26,10 +27,12 @@ def call_api_basic():
     #print (json.keys())
     #print (json["element_types"])
     df_element = pd.DataFrame(json["elements"])
-    df_map = df_element[["id","first_name","second_name"]].copy()
+    df_map = df_element[["id","first_name","second_name","team","element_type"]].copy()
     df_map["full_name"] = df_map.first_name + " " + df_map.second_name
-    df_map = df_map[["id","full_name"]]
-    dict_map = dict((id,full_name)for id,full_name in zip(df_map["id"],df_map["full_name"]))
+    df_map = df_map[["id","full_name","team","element_type"]]
+    dict_map = df_map.set_index('id').T.to_dict('list') #Reference: https://stackoverflow.com/questions/26716616/convert-a-pandas-dataframe-to-a-dictionary
+    #print (dict_map)
+    #dict_map = dict((id,full_name,team)for (id,full_name,team) in zip(df_map["id"],df_map["full_name"],df_map["team"]))
     #print (df_element, dict_map)
     #print (len(df_element_extracted))
     #print (df_map[df_map.full_name == "Bernd Leno"])
@@ -163,7 +166,7 @@ def call_api_manager_team(manager_id, event_id):
     #print(manager_id, event_id)
     return (df_picks)
 
-#call_api_basic()
+call_api_basic()
 #print (call_api_player(318))
 #call_api_league_standings(1)
 #call_api_manager_information(7626992)
