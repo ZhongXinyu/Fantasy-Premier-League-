@@ -26,16 +26,17 @@ def top_1000_managers():
     print ("Top 1000 team manager accquired")
     return (df_top1000["manager_id"])
 
-def top_1000_teams():
+def top_1000_teams(parameters):
     list_top_1000 = top_1000_managers()
     #list_top_1000 = list_top_1000[0:10] ### Reduce the no of API calls, used for testing.
     df = pd.DataFrame()
+    current_week = parameters["current_week"]
     for manager_id in list_top_1000:
-        for event_id in setting.week(): ### Range of weeks
+        for event_id in [current_week]: ### Range of weeks
             df_temp = call_api_manager_team(manager_id, event_id)
             df = pd.concat([df, df_temp], ignore_index=True)
     df = df.rename(columns={"element":"id"})
-    df.to_csv("Week_10.csv", index=False)
+    df.to_csv(f"Top_players_in_week{current_week}.csv", index=False)
     print ("Top 1000 teams accquired")
     return (df)
 

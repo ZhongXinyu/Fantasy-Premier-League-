@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 def colour(colour):
     colour_dict = {
         "Very Hard": "#800720",
@@ -35,6 +36,32 @@ def team_colour_dict():
     }
     return colour_dict
 
+def team_badge_dict():
+    ###https://teamcolorcodes.com/afc-bournemouth-color-codes/
+    badge_dict = {
+        1: plt.imread('marker/B.png'), #Arsenal
+        2:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Aston Villa
+        3:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Bournemouth
+        4:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Brentford
+        5:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Brighton & Hove Albion
+        6:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Chelsea
+        7:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Crystal Palace
+        8:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Everton
+        9:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Fulham
+        10:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Leicester City 
+        11:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Leeds United
+        12:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Liverpool
+        13:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Manchester City
+        14:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Manchester United
+        15:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Newcastle United
+        16:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Nottingham Forest
+        17:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Southampton
+        18:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Tottenham Hotspur
+        19:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #West Ham United
+        20:"https://resources.premierleague.com/premierleague/badges/25/t91.png", #Wolverhampton Wanderers 
+    }
+    return badge_dict
+
 def league_id():
     league_id_dict = {
         "Premier League": list(range(1,21)),
@@ -42,7 +69,9 @@ def league_id():
         "Test": [1],
         "Overall": [314]
     }
-    league = "Overall"
+    ############################
+    league = "Premier League"  #<---- Please Modify this
+    ############################
     return league_id_dict[league]
 
 def player_id():
@@ -54,14 +83,13 @@ def test():
     return False 
 
 def save_fig():
-    if test:
-        return False
-    else:
-        return True
+    return True
 
 def read_from_local():
     return True
 
+def total_managers():
+    return 10766732 ### from api.basic_info
 def current_week():
     return 11
 

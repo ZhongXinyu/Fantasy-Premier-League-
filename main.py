@@ -4,23 +4,28 @@ import miscellaneous
 import pandas as pd 
 import numpy as np
 import ml_model
+import time
 
 
 ###### Project 1: Finding the most picked player for top 1000 managers ######
 
-'''
 df_full,dict_map = api.call_api_basic()
 
-df = top_managers.top_1000_teams()
+for week in range (1,14):
 
-df = miscellaneous.mapping(df,dict_map)
+    df = top_managers.top_1000_teams({"current_week":week})
 
-dict_count = miscellaneous.counting(df)
+    df = miscellaneous.mapping(df,dict_map)
 
-plot.bar_player_count(dict_count)
-'''
+    df = miscellaneous.counting(df)
+
+    plot.bar_player_count(df,{"current_week":week})
+    
+    time.sleep (30)
+
 
 ###### project 2: Finding the most sub out/in players and its determing factors #####
+'''
 
 train_y_total = list()
 test_y_total = list()
@@ -70,3 +75,4 @@ predictions, df = ml_model.TreeRegressor(train_x_total, train_y_total, test_x_to
 df_high_volume = df[abs(df["predictions"])> 10000]
 print  (miscellaneous.mapping(df_high_volume))
 
+'''

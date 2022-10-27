@@ -162,11 +162,12 @@ def call_api_manager_team(manager_id, event_id):
     #print (json.keys())
     #print (json['detail'])
     df_picks = pd.DataFrame(json["picks"])
+    df_picks["is_substitute"] = df_picks["multiplier"] == 0
     #print (df_picks)
     #print(manager_id, event_id)
     return (df_picks)
 
-call_api_basic()
+#call_api_basic()
 #print (call_api_player(318))
 #call_api_league_standings(1)
 #call_api_manager_information(7626992)
