@@ -8,6 +8,7 @@ import time
 
 
 ###### Project 1: Finding the most picked player for top 1000 managers ######
+'''
 
 df_full,dict_map = api.call_api_basic()
 
@@ -22,18 +23,18 @@ for week in range (1,14):
     plot.bar_player_count(df,{"current_week":week})
     
     time.sleep (30)
-
+'''
 
 ###### project 2: Finding the most sub out/in players and its determing factors #####
-'''
+
 
 train_y_total = list()
 test_y_total = list()
 train_x_total = pd.DataFrame()
 test_x_total = pd.DataFrame()
 
-for i in range(1,500):
-    week = 7 
+for i in setting.player_id():
+    week = 8
     df_history, df_fixtures, df_history_past = api.call_api_player(i)
     df_transfer = df_history[['round','transfers_balance','transfers_in', 'transfers_out']]
     ### here transfer balance can be the y
@@ -43,7 +44,7 @@ for i in range(1,500):
     #df_fixtures_info = df_fixtures.columns
     df_list = [
         df_fixtures.iloc[1:(week-1), :]["difficulty"].reset_index(drop = True),
-        df_history.iloc[0:(week-2), :][['opponent_team', 'total_points', 'was_home', 'minutes',
+        df_history.iloc[(week-5):(week-2), :][['opponent_team', 'total_points', 'was_home', 'minutes',
        'goals_scored', 'assists', 'clean_sheets', 'goals_conceded',
        'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards',
        'red_cards', 'saves', 'bonus', 'bps', 'influence', 'creativity',
@@ -57,14 +58,15 @@ for i in range(1,500):
        'red_cards', 'saves', 'bonus', 'bps', 'influence', 'creativity',
        'threat', 'ict_index', 'value']].reset_index(drop = True)
         ]
-    train_y = list(df_history.iloc[1:week-1, :]["transfers_balance"])
+    train_y = list(df_history.iloc[1:week-1, :]["total_points"])
     train_y_total.extend(train_y)
-    test_y = list((df_history.iloc[week-1:week, :]["transfers_balance"]))
+    test_y = list((df_history.iloc[week-1:week, :]["total_points"]))
     test_y_total.extend(test_y)
     train_x = pd.concat(df_list,axis = 1)
     train_x_total = pd.concat([train_x_total,train_x], axis = 0)
     test_x = pd.concat(df_list_test,axis = 1)
     test_x_total = pd.concat([test_x_total, test_x], axis = 0)
+
 train_x_total = train_x_total.replace(np.nan, 0)
 test_x = test_x.replace(np.nan, 0)
 #print (test_x_total, test_y_total)
@@ -72,7 +74,5 @@ test_x = test_x.replace(np.nan, 0)
 predictions, df = ml_model.TreeRegressor(train_x_total, train_y_total, test_x_total, test_y_total)
 
 #print (high_trans_volume)
-df_high_volume = df[abs(df["predictions"])> 10000]
-print  (miscellaneous.mapping(df_high_volume))
-
-'''
+#df_high_volume = df[abs(df["predictions"])> 10000]
+#print  (miscellaneous.mapping(df_high_volume))

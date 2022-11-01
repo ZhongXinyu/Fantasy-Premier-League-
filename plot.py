@@ -17,7 +17,9 @@ def dot_plot(df,x_value,y_value,size):
     df = df[df["mean"] > 2]
     df = df[df["selected"] > setting.total_managers()*0.01]
     colour_dict = setting.team_colour_dict()
-    badge_dict = setting.team_badge_dict()
+    #######################
+    
+    #badge_dict = setting.team_badge_dict()
     #x_median = np.median(df[x_value])
     #y_median = np.median(df[y_value])
     #df["size"] = df["season_points"].apply (lambda x: x)
@@ -26,7 +28,7 @@ def dot_plot(df,x_value,y_value,size):
         x = x_value, 
         y = y_value, 
         hue = "team",
-        #style = "team",
+        style = "team",
         size = size,
         sizes = (20, 400),
         #markers = badge_dict,

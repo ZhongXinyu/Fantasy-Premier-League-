@@ -91,7 +91,7 @@ def read_from_local():
 def total_managers():
     return 10766732 ### from api.basic_info
 def current_week():
-    return 11
+    return 14
 
 def week():
     return (list(range(1,current_week())))

@@ -57,7 +57,7 @@ def player():
     with pd.ExcelWriter('output.xlsx',mode='w') as writer:  
         df.to_excel(writer, sheet_name='raw_data')
 
-    plot.dot_plot(df,"value","season_points","selected")
+    plot.dot_plot(df,"value","mean","selected")
 
 player()
     #df = miscellaneous.mapping(df,dict_map)
