@@ -5,6 +5,7 @@ from datetime import datetime
 import numpy as np
 import seaborn as sns
 import mplcursors
+import os
 # load sample data
 
 
@@ -16,6 +17,7 @@ def dot_plot(df,x_value,y_value,size):
     #df = df[df["position"] == 1] 
     df = df[df["mean"] > 2]
     df = df[df["selected"] > setting.total_managers()*0.01]
+    df = df[df["position"] == 4]
     colour_dict = setting.team_colour_dict()
     #######################
     
@@ -28,7 +30,7 @@ def dot_plot(df,x_value,y_value,size):
         x = x_value, 
         y = y_value, 
         hue = "team",
-        style = "team",
+        #style = "team",
         size = size,
         sizes = (20, 400),
         #markers = badge_dict,
@@ -119,7 +121,11 @@ def bar_player_count(df,parameters):
     '''
     ax.set_title(f"Top 20 most frequently picked players in week{current_week}")
     if setting.save_fig:
-        plt.savefig(f'output/player_count/26_Oct_2022/player_count_week_{current_week}.jpeg',bbox_inches = "tight" ,pad_inches = 1)
+        folder_name = "output/"+"player_count/"+"05_Nov_2022"
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+
+        plt.savefig(f'{folder_name}/player_count_week_{current_week}.jpeg',bbox_inches = "tight" ,pad_inches = 1)
         print (f"Week{current_week} Figure saved")
     else:
         plt.show()

@@ -8,6 +8,7 @@ import numpy as np
 
 #api.call_api_player(1)
 
+
 def player():   
     """
     This function collected numerical information in a dataframe, 
@@ -15,6 +16,17 @@ def player():
     E.g. plot cost["value"] vs performance of the current week["total_points"], or performance of the season["season_points"] 
     """
     df = pd.DataFrame ()
+    df = pd.DataFrame(columns=[
+                    'element',
+                    'round',
+                    'total_points',
+                    'selected',
+                    'transfers_balance',
+                    'transfers_in',
+                    'transfers_out',
+                    'value',
+                    'bonus'
+                ]) 
     df_full,dict_map = api.call_api_basic()
     season_points = []
     season_bonus = []
@@ -57,7 +69,7 @@ def player():
     with pd.ExcelWriter('output.xlsx',mode='w') as writer:  
         df.to_excel(writer, sheet_name='raw_data')
 
-    plot.dot_plot(df,"value","mean","selected")
+    plot.dot_plot(df,"value","season_bonus","selected")
 
 player()
     #df = miscellaneous.mapping(df,dict_map)

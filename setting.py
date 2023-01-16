@@ -67,7 +67,8 @@ def league_id():
         "Premier League": list(range(1,21)),
         "Arsenal": [1],
         "Test": [1],
-        "Overall": [314]
+        "Overall": [314],
+        "OW League":[516847]
     }
     ############################
     league = "Premier League"  #<---- Please Modify this
@@ -75,7 +76,7 @@ def league_id():
     return league_id_dict[league]
 
 def player_id():
-    return list(range(1,639))
+    return list(range(1,638))
 
 ###### These are informations that requires changing #######
 
@@ -90,8 +91,9 @@ def read_from_local():
 
 def total_managers():
     return 10766732 ### from api.basic_info
+
 def current_week():
-    return 14
+    return 10
 
 def week():
     return (list(range(1,current_week())))
