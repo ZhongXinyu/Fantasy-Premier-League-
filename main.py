@@ -5,13 +5,12 @@ import pandas as pd
 import numpy as np
 import ml_model
 import time
-
-'''
-
-###### Project 1: Finding the most picked player for top 1000 managers ######
-
+import plotly.express as px
+import plotly.graph_objs as go
 
 df_full,dict_map = api.call_api_basic()
+
+###### Project 1: Finding the most picked player for top 1000 managers ######
 
 for week in range (1,setting.current_week()+1):
 
@@ -78,8 +77,8 @@ train_x_total = train_x_total.replace(np.nan, 0)
 #print (test_x_total, test_y_total)
 #print (train_x_total, train_y_total)
 predictions, df = ml_model.TreeRegressor(train_x_total, train_y_total)
+'''
 
-#print (high_trans_volume)
-#df_high_volume = df[abs(df["predictions"])> 10000]
-#print  (miscellaneous.mapping(df_high_volume))
+
+
 

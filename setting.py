@@ -35,6 +35,29 @@ def team_colour_dict():
         20:"#FDB913", #Wolverhampton Wanderers 
     }
     return colour_dict
+def team_name_map():
+    return {
+        1: "Arsenal",
+        2: "Aston Villa",
+        3: "Brighton & Hove Albion",
+        4: "Burnley",
+        5: "Chelsea",
+        6: "Crystal Palace",
+        7: "Everton",
+        8: "Leeds United",
+        9: "Leicester City",
+        10: "Liverpool",
+        11: "Manchester City",
+        12: "Manchester United",
+        13: "Newcastle United",
+        14: "Norwich City",
+        15: "Sheffield United",
+        16: "Southampton",
+        17: "Tottenham Hotspur",
+        18: "Watford",
+        19: "West Ham United",
+        20: "Wolverhampton Wanderers"
+    }
 
 def team_badge_dict():
     ###https://teamcolorcodes.com/afc-bournemouth-color-codes/
@@ -93,7 +116,22 @@ def total_managers():
     return 10766732 ### from api.basic_info
 
 def current_week():
-    return 10
+    return 26
 
 def week():
     return (list(range(1,current_week())))
+
+def filter(df):
+    df = df[df["mean"]>2]
+    return df
+
+def plotly_label():
+    return {
+        "value":"Current Price",
+        "season bonus":"Total Bonus Points",
+        "season_points":"Total Points", 
+        "last_3_points":"Pt earned in last 3 games",
+        "last_5_points":"Pt earned in last 5 games",
+        "mean":"Average points/game"
+        }
+

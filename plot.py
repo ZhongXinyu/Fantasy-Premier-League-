@@ -1,7 +1,7 @@
 import setting
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, date
 import numpy as np
 import seaborn as sns
 import mplcursors
@@ -17,7 +17,7 @@ def dot_plot(df,x_value,y_value,size):
     #df = df[df["position"] == 1] 
     df = df[df["mean"] > 2]
     df = df[df["selected"] > setting.total_managers()*0.01]
-    df = df[df["position"] == 4]
+    # df = df[df["position"] == 4]
     colour_dict = setting.team_colour_dict()
     #######################
     
@@ -121,7 +121,8 @@ def bar_player_count(df,parameters):
     '''
     ax.set_title(f"Top 20 most frequently picked players in week{current_week}")
     if setting.save_fig:
-        folder_name = "output/"+"player_count/"+"05_Nov_2022"
+        today = date.today()
+        folder_name = "output/"+"player_count/"+today.strftime("%b-%d-%Y")
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
 

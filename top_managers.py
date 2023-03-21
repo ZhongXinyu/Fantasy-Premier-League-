@@ -36,7 +36,7 @@ def top_1000_teams(parameters):
             df_temp = call_api_manager_team(manager_id, event_id)
             df = pd.concat([df, df_temp], ignore_index=True)
     df = df.rename(columns={"element":"id"})
-    df.to_csv(f"Top_players_in_week{current_week}.csv", index=False)
+    # df.to_csv(f"Top_players_in_week{current_week}.csv", index=False)
     print ("Top 1000 teams accquired")
     return (df)
 

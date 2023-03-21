@@ -1,8 +1,13 @@
 import pandas as pd
+import setting
 def mapping(df,dict_map):
+    
     df["full_name"] = df["id"].apply(lambda x: dict_map[x][0])
     df["team"] = df["id"].apply(lambda x:dict_map[x][1])
     df["position"] = df["id"].apply(lambda x:dict_map[x][2])
+
+    colour_dict = setting.team_colour_dict()
+    df["team_colour"] = df["team"].apply(lambda x: colour_dict[x])
     print ("Mapping Completed")
     return (df)
 
@@ -30,19 +35,14 @@ def counting(df):
         3   Andreas Hoelgebaum Pereira       False            False      4
         ...
     """
-    #print (df)
     df = df.drop(['id','position','multiplier'],axis = 1)
     df = pd.DataFrame({"count":df.groupby(['full_name', 'is_captain', 'is_vice_captain','is_substitute']).size()}).reset_index()
-    #df.rename(columns={0:"count"})
     for col in ["is_captain","is_vice_captain","is_substitute"]:
         df[col] = df[col].astype(int)
         df[col] = df[col] * df["count"]
     df ["normal"] = df["count"] - df["is_captain"] - df["is_vice_captain"] - df ["is_substitute"]
     df = df.groupby(["full_name"]).sum().reset_index()
     df = df.sort_values(by=['count'],ascending=False)
-    #print (df)
-    #print (df[df['full_name'] == "Harry Kane"])
-
     #for index, full_name in enumerate (df["full_name"]):
     #    if full_name in dict_player_count:
     #        dict_player_count[full_name][0] += 1
