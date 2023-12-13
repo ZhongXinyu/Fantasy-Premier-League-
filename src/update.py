@@ -19,12 +19,18 @@ def update_basic_info():
     """
     Updates the information for events
     """
-    url = "https://fantasy.premierleague.com/api/bootstrap-static/"
-    r = re.get(url)
-    json_dict=r.json()
-    with open(f'data_base/basic_info.json', "w") as outfile:
-        json.dump(json_dict, outfile)
+    df_full,dict_map = api.call_api_basic()
+    df_map = pd.DataFrame.from_dict(dict_map, orient='index', columns = ["full_name","team","position"])
+    df_map["element"] = df_map.index
+    df_full.to_pickle("data_base/full_info.pkl")
+    df_map.to_pickle("data_base/mapping.pkl")
     print ("Basic Info Updated")
+
+def update_player_info():
+    """
+    Updates the player information, including full name, team, position   
+    """
+    
 
 def update_player():
     df_history = pd.DataFrame()
@@ -150,5 +156,6 @@ def update_database():
 
 if __name__ == '__main__':
     update_basic_info()
+    update_player_info()
     update_player()
     update_database()
