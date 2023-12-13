@@ -22,8 +22,10 @@ def update_basic_info():
     df_full,dict_map = api.call_api_basic()
     df_map = pd.DataFrame.from_dict(dict_map, orient='index', columns = ["full_name","team","position"])
     df_map["element"] = df_map.index
+    df_team = df_map[["team","element"]].copy()
     df_full.to_pickle("data_base/full_info.pkl")
     df_map.to_pickle("data_base/mapping.pkl")
+    df_team.to_pickle("data_base/team.pkl")
     print ("Basic Info Updated")
 
 def update_player_info():
