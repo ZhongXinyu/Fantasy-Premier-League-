@@ -16,6 +16,3 @@ dependencies:
   - plotly
   - dash
   - DateTime
-  - dash_bootstrap_components
-  - statsmodels
-  - ml_model
