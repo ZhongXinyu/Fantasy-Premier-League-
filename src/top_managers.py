@@ -1,7 +1,8 @@
-import setting
-from api import call_api_league_standings,call_api_manager_team,call_api_basic
+import src.setting as setting
+from src.api import call_api_league_standings,call_api_manager_team,call_api_basic
 import pandas as pd 
 import numpy as np
+import src.miscellaneous as miscellaneous
 
 
 def top_1000_managers():
@@ -31,10 +32,13 @@ def top_1000_teams(parameters):
     #list_top_1000 = list_top_1000[0:10] ### Reduce the no of API calls, used for testing.
     df = pd.DataFrame()
     current_week = parameters["current_week"]
+    i = 0 
     for manager_id in list_top_1000:
         for event_id in [current_week]: ### Range of weeks
             df_temp = call_api_manager_team(manager_id, event_id)
             df = pd.concat([df, df_temp], ignore_index=True)
+            i += 1
+            miscellaneous.loading_bar(i,len(list_top_1000), f"Loading Week {event_id}")
     df = df.rename(columns={"element":"id"})
     # df.to_csv(f"Top_players_in_week{current_week}.csv", index=False)
     print ("Top 1000 teams accquired")

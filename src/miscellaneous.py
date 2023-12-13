@@ -1,7 +1,18 @@
+"""!
+@file miscellaneous.py
+"""
 import pandas as pd
-import setting
+import src.setting as setting
+import sys 
+import time
+
 def mapping(df,dict_map):
-    
+    """!
+    @brief Mapping player id to player full name, team, position and team colour
+    @param df: (DataFrame) dataframe with player id
+    @param dict_map: (dict) mapping dictionary with id as key mapped to players full name
+    @return df: (DataFrame) dataframe with player full name, team, position and team colour
+    """
     df["full_name"] = df["id"].apply(lambda x: dict_map[x][0])
     df["team"] = df["id"].apply(lambda x:dict_map[x][1])
     df["position"] = df["id"].apply(lambda x:dict_map[x][2])
@@ -43,12 +54,23 @@ def counting(df):
     df ["normal"] = df["count"] - df["is_captain"] - df["is_vice_captain"] - df ["is_substitute"]
     df = df.groupby(["full_name"]).sum().reset_index()
     df = df.sort_values(by=['count'],ascending=False)
-    #for index, full_name in enumerate (df["full_name"]):
-    #    if full_name in dict_player_count:
-    #        dict_player_count[full_name][0] += 1
-    #        #dict_player_count[full_name ]
-    #    else:
-    #        dict_player_count[full_name][0] = 1
-    #        #dict_player_count[full_name][1] = df
     print ("Counting completed")
     return (df)
+
+
+def loading_bar(i: int, total_iterations: int, loading_message:str = "", message:str = "") -> None:
+    """!
+    @brief Print a loading bar in the terminal
+    @param i: (int) current iteration
+    @param total_iterations: (int) total iterations
+    @param loading_message: (str) loading message before the loading bar
+    @param message: (str) message to be printed after the loading bar
+    """
+    percentage = i / total_iterations
+    bar_length = 30
+    progress = int(bar_length * percentage)
+    sys.stdout.write("\r")
+    sys.stdout.write(f"{loading_message}")
+    sys.stdout.write("[{:<{}}] {:.0%}".format("█" * progress, bar_length, percentage) + f"{message}")
+    sys.stdout.flush()
+    

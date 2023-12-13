@@ -1,5 +1,21 @@
+"""!
+@file setting.py
+"""
 import matplotlib.pyplot as plt
-def colour(colour):
+def colour(colour: str) -> str:
+    """!
+    @brief return colour code (str) for the given colour (str)
+    @param colour: (str) colour
+    @return colour_dict[colour]: (str) colour code
+    @details colour_dict = {
+        "Very Hard": "#800720",
+        "Hard": "#FF1751",
+        "Medium": "#E7E7E7",
+        "Easy":"#01FC7A",
+        "Very Easy":"#375523",
+        "FPL_Green":"#E7E7E7"
+        }
+    """
     colour_dict = {
         "Very Hard": "#800720",
         "Hard": "#FF1751",
@@ -116,7 +132,7 @@ def total_managers():
     return 10766732 ### from api.basic_info
 
 def current_week():
-    return 26
+    return 11
 
 def week():
     return (list(range(1,current_week())))

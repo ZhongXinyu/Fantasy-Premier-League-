@@ -1,11 +1,24 @@
 import requests as re
 import json
-import setting
+import src.setting as setting
 import pandas as pd
-import api, miscellaneous
+import src.api as api, src.miscellaneous as miscellaneous
 import numpy as np
+import sys
+import time
+import src.miscellaneous as miscellaneous
+
+"""@package docstring
+Documentation for this module.
+
+More details.
+"""
+
 
 def update_basic_info():
+    """
+    Updates the information for events
+    """
     url = "https://fantasy.premierleague.com/api/bootstrap-static/"
     r = re.get(url)
     json_dict=r.json()
@@ -14,13 +27,36 @@ def update_basic_info():
     print ("Basic Info Updated")
 
 def update_player():
+    df_history = pd.DataFrame()
+    df_fixtures = pd.DataFrame()
+    df_history_past = pd.DataFrame()
     for id in setting.player_id():
         url = f"https://fantasy.premierleague.com/api/element-summary/{id}/"
         r = re.get(url)
         json_dict=r.json()
         with open(f'data_base/player/{id}.json', "w") as outfile:
             json.dump(json_dict, outfile)
+        if "history" in json_dict.keys():
+            df_history = pd.concat([df_history, pd.DataFrame(json_dict["history"])])
+        if "fixtures" in json_dict.keys():
+            df_fixtures = pd.concat([df_fixtures, pd.DataFrame(json_dict["fixtures"])])     
+        if "history_past" in json_dict.keys():
+            df_history_past = pd.concat([df_history_past, pd.DataFrame(json_dict["history_past"])])
+
+        miscellaneous.loading_bar(id, len(setting.player_id()), loading_message = "Updating Player Info: ")
+        # percentage = id/max(setting.player_id())
+        # bar_length = 30
+        # progress = int(bar_length * percentage)
+
+        # sys.stdout.write("\r[{:<{}}] {:.0%}".format("=" * progress, bar_length, percentage))
+        # sys.stdout.flush()
+        # time.sleep(0.1)
+  # Adjust the sleep duration for the desired speed
+    df_fixtures.to_pickle("data_base/player/fixtures.pkl")
+    df_history.to_pickle("data_base/player/history.pkl")
+    df_history_past.to_pickle("data_base/player/history_past.pkl")
     print ("Player Info Updated")
+
 
 def update_database():
     """
@@ -53,6 +89,8 @@ def update_database():
     id = setting.player_id()
     for i in id:
         df_history, df_fixtures, df_history_past = api.call_api_player(i)
+        if df_history.shape[0] == 0:
+            continue
         df_history = df_history[
                 [
                     'element',
@@ -72,10 +110,16 @@ def update_database():
         season_bonus.append(sum(list(df_history["bonus"])))
         standard_deviation.append(np.nanstd(list(df_history["total_points"])))
         mean.append(np.nanmean(list(df_history["total_points"])))
-        df = pd.concat([df,df_history[df_history["round"] == week]])
+        df = pd.concat([df,df_history[df_history["round"] == week].head(1)]) #Take the first one in case of double week
+    
+        ''' element  round  total_points  selected  transfers_balance  transfers_in  transfers_out  value  bonus
+            26       61     28             0      2666                 -9             0              9     52      0
+            27       61     29             0      2652                -14             0             14     52      0
+            28       61     29             0      2652                -14             0             14     52      0
+        '''
         points_time_series.append(list(df_history["total_points"]))
         selected_time_series.append(list(df_history["selected"]))
-    consistency =[ abs(i/j) for i, j in zip(standard_deviation,mean)]
+    consistency = [abs(i / j) if j != 0 else None for i, j in zip(standard_deviation, mean)]
     df = df.rename(columns = {"element" : "id"})
     df["last_5_points"] = last_5_points
     df["last_3_points"] = last_3_points
@@ -91,6 +135,7 @@ def update_database():
     df = setting.filter(df)
     with pd.ExcelWriter('output/output.xlsx',mode='w') as writer:  
         df.to_excel(writer, sheet_name='raw_data')
+    df.to_pickle("data_base/player/database.pkl")
 
 
     df_concise = df[["full_name","value","season_points","season_bonus","last_3_points","last_5_points","points_time_series","selected_time_series"]]
@@ -102,6 +147,8 @@ def update_database():
     df_concise.to_json('output/concise_output.json')
     print ("Database Updated")
 
-# update_basic_info()
-# update_player()
-update_database()
+
+if __name__ == '__main__':
+    update_basic_info()
+    update_player()
+    update_database()

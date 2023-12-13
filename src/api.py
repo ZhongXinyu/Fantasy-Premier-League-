@@ -1,7 +1,13 @@
-from curses import termname
+"""!
+@package api
+@file api.py
+@brief API for the project
+@details This script contains all the apis for the project, including: call_api_basic, call_api_player, call_api_manager_information, call_api_manager_history, call_api_league_standings, call_api_manager_team
+"""
+
 import requests as re
 import pandas as pd
-import setting
+import src.setting as setting
 import json
 
 """
@@ -9,17 +15,22 @@ Documentation for reference: https://medium.com/@frenzelts/fantasy-premier-leagu
 """
 
 def call_api_basic():
+    """!
+    @brief Return a dataframe of player information and a mapping dictionary with id as key mapped to players full name
+    @return df_element: (DataFrame) a database of player information
+    @return dict_map: (DataFrame) a mapping dictionary with id as key mapped to players full name
+    """
     """
     url: "https://fantasy.premierleague.com/api/bootstrap-static/"
+    \n
     json.keys():['events', 'game_settings', 'phases', 'teams', 'total_players', 'elements', 'element_stats', 'element_types']
+    \n
     Under element:
+    \n
         -id : player_id
         -first_name
         -second_name
         -element_type (1:GoalKeeper,2:Defender,3:Midfielder,4:Striker)
-    Output:
-    df_element: a database of player information
-    dcit_map: a mapping dictionary with id as key mapped to players full name 
     """
     url = "https://fantasy.premierleague.com/api/bootstrap-static/"
     r = re.get(url)
@@ -38,17 +49,16 @@ def call_api_basic():
     #print (df_map[df_map.full_name == "Bernd Leno"])
     return (df_element,dict_map)
 
-def call_api_player(id):
-    """
-    Player Detailed Data
+def call_api_player(id: int):
+    """!
+    @brief Return a dataframe of player history, fixtures and history_past
+    @param id (int): player_id
+    @return df_history (DataFrame): a dataframe of player history, details in the following table 
+    @details 
     url: https://fantasy.premierleague.com/api/element-summary/{id}/"
     json.keys():['fixtures', 'history', 'history_past']
-    Example of player id:
-    3 Granit Xhaka
-    318 Erling Haaland
-    428 Son Heung-min
-
-    Output: df_history
+    """
+    """
            element  fixture  opponent_team  ...  selected  transfers_in transfers_out
         0      318       10             19  ...   3398599             0             0
         1      318       17              3  ...   5226268       1143813         29876
@@ -59,51 +69,59 @@ def call_api_player(id):
         6      318       80             20  ...   8407273        142869          7827
         7      318       88             14  ...   8548463        126753         32563
 
-        df_history.columns
-        Index(['element', 'fixture', 'opponent_team', 'total_points', 'was_home',
-            'kickoff_time', 'team_h_score', 'team_a_score', 'round', 'minutes',
-            'goals_scored', 'assists', 'clean_sheets', 'goals_conceded',
-            'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards',
-            'red_cards', 'saves', 'bonus', 'bps', 'influence', 'creativity',
-            'threat', 'ict_index', 'value', 'transfers_balance', 'selected',
-            'transfers_in', 'transfers_out'],
-            dtype='object')
+    df_history.columns
+    Index(['element', 'fixture', 'opponent_team', 'total_points', 'was_home',
+        'kickoff_time', 'team_h_score', 'team_a_score', 'round', 'minutes',
+        'goals_scored', 'assists', 'clean_sheets', 'goals_conceded',
+        'own_goals', 'penalties_saved', 'penalties_missed', 'yellow_cards',
+        'red_cards', 'saves', 'bonus', 'bps', 'influence', 'creativity',
+        'threat', 'ict_index', 'value', 'transfers_balance', 'selected',
+        'transfers_in', 'transfers_out'],
+        dtype='object')
+    
+    Example of player id:
+    3 Granit Xhaka
+    318 Erling Haaland
+    428 Son Heung-min
+
     """
-    if setting.read_from_local:
+    if setting.read_from_local():
         f = open (f'data_base/player/{id}.json', "r")
         j = json.loads(f.read())
     else:
         url = f"https://fantasy.premierleague.com/api/element-summary/{id}/"
         r = re.get(url)
         j = r.json()
-    #print (json)
-    df_history = pd.DataFrame(j["history"])
-    df_fixtures = pd.DataFrame(j["fixtures"])
-    df_history_past = pd.DataFrame(j["history_past"])
-    #print (df_history, df_fixtures, df_history_past,sep="\n")
-    return (df_history, df_fixtures, df_history_past)
+    if not(j.get('detail') == "Not found."):
+        df_history = pd.DataFrame(j["history"])
+        df_fixtures = pd.DataFrame(j["fixtures"])
+        df_history_past = pd.DataFrame(j["history_past"])
+        return (df_history, df_fixtures, df_history_past)
+    else:
+        return (pd.DataFrame(),pd.DataFrame(),pd.DataFrame())
 
-def call_api_manager_information(manager_id):
+def call_api_manager_information(manager_id: int):
+    ### incomplete function
     url =  f'https://fantasy.premierleague.com/api/entry/{manager_id}/'
     r = re.get(url)
     json=r.json()
-    print (json.keys())
-    df_current = pd.DataFrame(json)
-    print (df_current)
 
-def call_api_manager_history(manager_id):
+def call_api_manager_history(manager_id: int):
+    ### incomplete function
     url =  f'https://fantasy.premierleague.com/api/entry/{manager_id}/history/'
     r = re.get(url)
     json=r.json()
-    print (json.keys())
     df_current = pd.DataFrame(json["chips"])
-    print (df_current)
 
-def call_api_league_standings(league_id):
+def call_api_league_standings(league_id: int):
+    """!
+    @details url:"https://fantasy.premierleague.com/api/leagues-classic/{league_id}/standings"
+    @details json.keys:['new_entries', 'last_updated_data', 'league', 'standings']
     """
-    url : "https://fantasy.premierleague.com/api/leagues-classic/{league_id}/standings"
-    json.keys:['new_entries', 'last_updated_data', 'league', 'standings']
-    Output:               id  event_total            player_name  rank  last_rank  rank_sort  total    entry            entry_name
+
+    """
+    Output:
+                        id      event_total          player_name    rank    last_rank  rank_sort total entry            entry_name
                 0    7626992           79             Ross Lewis     1          2          1    623  1434027                Roscoe
                 1   51043206           79           Ricky Chahal     2          3          2    622  7071466     Game of Throw-Ins
                 2   53988576           69            Kike Markic     3          1          3    621  7415973       Cb Dalton Split
@@ -123,7 +141,10 @@ def call_api_league_standings(league_id):
     return (df_top50_id)
 
 def call_api_my_team(manager_id):
-    """
+    ### incomplete
+    """!
+    @brief Some code that doesnt work
+    @details
     NEED to repair
     Expected: Login and see my team
     """
@@ -137,13 +158,17 @@ def call_api_my_team(manager_id):
     session = re.session()
     session.post(url, data=payload)
     r = session.get(f'https://fantasy.premierleague.com/drf/my-team/{manager_id}')
-    #print (r)
     json=r.json()
-    #print (json)
 
-def call_api_manager_team(manager_id, event_id):
+def call_api_manager_team(manager_id: int, event_id: int):
+    """!
+    @param manager_id (int)
+    @param event_id (int)
+    @return df_picks (pd.DataFrame): a dataframe of the picks of the manager at the week
+    int the pick of manager{manager_id} at week{event_id}
     """
-    Returns the pick of manager{manager_id} at week{event_id}
+
+    """
     json.keys():['active_chip', 'automatic_subs', 'entry_history', 'picks']
     Output:
 
@@ -167,11 +192,11 @@ def call_api_manager_team(manager_id, event_id):
     #print(manager_id, event_id)
     return (df_picks)
 
-#call_api_basic()
-#print (call_api_player(318))
-#call_api_league_standings(1)
-#call_api_manager_information(7626992)
-#call_api_manager_history(7626992)
-#call_api_my_team(7134674)
-#call_api_manager_team(51043206,1)
-#print(pd)
+if __name__ == "__main__":
+    call_api_basic()
+    call_api_player(318)
+    call_api_league_standings(1)
+    # call_api_manager_information(7626992)
+    # call_api_manager_history(7626992)
+    # call_api_my_team(7134674)
+    call_api_manager_team(1,1)
