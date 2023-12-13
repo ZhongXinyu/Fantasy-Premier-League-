@@ -1,0 +1,21 @@
+name: FPL_football
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python = 3.8
+  
+  - pandas
+  - scikit-learn
+  - NumPy
+  - matplotlib
+  - seaborn
+  - mplcursors
+  - requests
+  - openpyxl
+  - plotly
+  - dash
+  - DateTime
+  - dash_bootstrap_components
+  - statsmodels
+  - ml_model
