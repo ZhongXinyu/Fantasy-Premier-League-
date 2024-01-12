@@ -1,8 +1,4 @@
-import src.setting as setting
-import src.miscellaneous as miscellaneous 
-import src.plot as plot
-import src.api as api
-#import api.call_api_player
+import api. setting, plot, miscellaneous
 import pandas as pd 
 import numpy as np
 
