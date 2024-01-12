@@ -4,3 +4,4 @@ docs
 .mypy_cache
 __pycache__
 .DS_store
+output
