@@ -7,7 +7,7 @@
 
 import requests as re
 import pandas as pd
-import setting
+import src.setting as setting
 import json
 
 """

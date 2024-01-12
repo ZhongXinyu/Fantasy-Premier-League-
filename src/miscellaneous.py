@@ -2,7 +2,7 @@
 @file miscellaneous.py
 """
 import pandas as pd
-import setting as setting
+import src.setting as setting
 import sys 
 import time
 

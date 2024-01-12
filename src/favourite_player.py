@@ -22,10 +22,9 @@ This is the example.
 @details Currently, this python script is used to generate the player selections of top 1000 managers for each week.
 """
 
-# import src.api as api, src.plot as plot, src.top_managers as top_managers
-# import src.setting as setting
-# import src.miscellaneous as miscellaneous
-import api, plot, top_managers, setting, miscellaneous
+import src.api as api, src.plot as plot, src.top_managers as top_managers
+import src.setting as setting
+import src.miscellaneous as miscellaneous
 import pandas as pd 
 import numpy as np
 import time
@@ -44,7 +43,7 @@ for week in range (1,setting.current_week()+1):
 
     plot.bar_player_count(df,{"current_week":week})
     
-    # time.sleep (30)
+    time.sleep (30)
 
 
 
