@@ -1,6 +1,6 @@
 # This is a Football data analysis project
 
-Data is based on Premier League and Fantasy Premier League game.
+Data is based on Premier League and the Fantasy Premier League game.
 
 ## Setting up
 
@@ -33,11 +33,11 @@ Run
 python3 -m src.favourite_player
 ```
 (run as a method otherwise relative path will be wrong)
-and the results are generated in output/player_count/{date} folder. These images demonstrate the most commonly picked players *(captain/vice_captain/substitute)* by the top 1000 managers. It may take a while to run as it calls API 1000 times for each week's data.(Need to improve performance)
+and the results are generated in the output/player_count/{date} folder. These images demonstrate the most commonly picked players *(captain/vice_captain/substitute)* by the top 1000 managers. It may take a while to run as it calls API 1000 times for each week's data. (Need to improve performance)
 
 ### 3 model
 
-I am building a model to predict the transfer in/out of players based on their performance and other factors Currently testing various models to capture the most indicating feature to predict FPL players' behavior when transfering players. (TBD)
+I am building various models to predict the transfer in/out of players based on their performance and other factors. I am Currently testing various models to capture the most indicating features to predict FPL players' behavior when transferring players. (TBD)
 
 ## Other useful output
 
